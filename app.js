@@ -6,7 +6,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require('mongoose');
-const encrypt = require("mongoose-encryption"); //to encrypt specified fields in the database
+const md5 = require("md5"); // for hashing
+//const encrypt = require("mongoose-encryption"); //to encrypt specified fields in the database
 
 const app = express();
 
@@ -23,11 +24,13 @@ const userSchema = new mongoose.Schema({
     password: String
 });
 
+//console.log(md5("Hello world!"));
+
 //------LEVEL 2 - ENCRYPTION----------
 //This has to be declared before the model
-const secret = process.env.SECRET_KEY;
+//const secret = process.env.SECRET_KEY;
 // console.log(secret);
-userSchema.plugin(encrypt, { secret: secret, encryptedFields: ["password"] });
+//userSchema.plugin(encrypt, { secret: secret, encryptedFields: ["password"] });
 
 const User = new mongoose.model("User", userSchema);
 
@@ -47,7 +50,7 @@ app.get("/login", function (req, res) {
 app.post("/register", (req, res) => {
     const newUser = new User({
         email: req.body.username,
-        password: req.body.password
+        password: md5(req.body.password) // to turn the password to irreversible hash
     });
 
     newUser.save((err) => {
@@ -63,7 +66,7 @@ app.post("/register", (req, res) => {
 
 app.post("/login", function (req, res) {
     const username = req.body.username;
-    const password = req.body.password;
+    const password = md5(req.body.password);
 
     User.findOne({ email: username }, function (err, foundUser) {
         if (err) {
@@ -96,6 +99,7 @@ app.listen(3000, function () {
 // Immitation game
 
 
+//Books
+// The code books
 
-//sites
-//cryptii.com - to specify the kind of encryption I want to use.
+
