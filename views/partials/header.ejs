@@ -7,6 +7,40 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/bootstrap-social.css">
 </head>
 
 <body>
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : process.env.FACEBOOK_APP_ID,
+      cookie     : true,
+      xfbml      : true,
+      version    : "v14.0"
+    });
+      
+    FB.AppEvents.logPageView();   
+      
+  };
+  FB.login(function(response) {
+    if (response.authResponse) {
+     console.log('Welcome!  Fetching your information.... ');
+     FB.api('/me', function(response) {
+       console.log('Good to see you, ' + response.name + '.');
+     });
+    } else {
+     console.log('User cancelled login or did not fully authorize.');
+    }
+});
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, "script", "facebook-jssdk"));
+</script>
